@@ -102,7 +102,7 @@ require'../layout/layout_header.php';
                     <input type="text" name="passlama" required class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Password Baru</label>
                     <input type="text" name="password" class="form-control">
                     <small class="text-danger">Kosongkan saja jika tidak akan mengubah password</small>
                 </div>
@@ -113,8 +113,12 @@ require'../layout/layout_header.php';
                 <div class="form-group">
                     <label>Role</label>
                     <select name="role" class="form-control">
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
+                        <option value="admin" <?= $edit['role'] === 'admin' ? 'selected' : '' ?>>
+                            Admin
+                        </option>
+                        <option value="user" <?= $edit['role'] === 'user' ? 'selected' : '' ?>>
+                            User
+                        </option>
                     </select>
                 </div>
                 <div class="text-right">

@@ -100,7 +100,7 @@ require'../layout/layout_header.php';
                     <input type="text" name="passlama" required class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Password Baru</label>
                     <input type="text" name="password" class="form-control">
                     <small class="text-danger">Kosongkan saja jika tidak akan mengubah password</small>
                 </div>
