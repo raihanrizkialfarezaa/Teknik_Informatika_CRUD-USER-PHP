@@ -1,3 +1,9 @@
+<?php  
+include "../services/database.php";
+$userId = $_SESSION['user_id'];
+$query  = "SELECT * FROM `users` WHERE `id` = {$userId}";
+$user = ambilsatubaris($login,$query);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +77,7 @@
                         <a class="nav-toggler open-close waves-effect waves-light hidden-md hidden-lg" href="javascript:void(0)"><i class="fa fa-bars"></i></a>
                     </li>
                     <li>
-                        <a class="profile-pic" href="#"> <img src="../assets/plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">PUNYA RAIHAN RIZKI</b></a>
+                        <a class="profile-pic" href="#"> <img src="../assets/plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?= $user['nama_lengkap'] ?></b></a>
                     </li>
                 </ul>
             </div>

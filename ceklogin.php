@@ -4,7 +4,7 @@ include "services/database.php";
 // die(mysqli_error($conn));
 
 $username = ($_POST['username']);
-$password = ($_POST['password']);
+$password = md5($_POST['password']);
 $query = "SELECT * FROM users where username='$username' AND password = '$password'";
 $row = mysqli_query($login,$query);
 $data = mysqli_fetch_assoc($row);

@@ -6,7 +6,7 @@ $roles = ['admin','user'];
 if (isset($_POST['btn-simpan'])) {
     $nama     = $_POST['nama_lengkap'];
     $username = $_POST['username'];
-    $pass     = $_POST['password'];
+    $pass     = md5($_POST['password']);
     $email    = $_POST['email'];  
     $role     = $_POST['role'];
 

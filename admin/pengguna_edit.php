@@ -9,30 +9,37 @@ $queryedit = "SELECT * FROM users WHERE id = '$id_user'";
 $edit = ambilsatubaris($login,$queryedit);
 
 if(isset($_POST['btn-simpan'])){
-    $nama     = $_POST['nama_lengkap'];
+    $nama = $_POST['nama_lengkap'];
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $role     = $_POST['role'];
+    $role = $_POST['role'];
     $passwordlam = $_POST['passlama'];
-    $querypass = "SELECT password FROM users WHERE id = '$id_user'";
+    $querypass = "SELECT * FROM users WHERE id = '$id_user'";
     $res = mysqli_query($login, $querypass);
     $old = mysqli_fetch_assoc($res);
+    $email_lama = $old['email'];
 
-    if ($_POST['passlama'] !== $old['password']) {
+    if (md5($_POST['passlama']) !== $old['password']) {
         echo "<script>alert('Password lama tidak sesuai');location.href='pengguna_edit.php?id=$id_user';</script>";
         exit;
     }
     if (!empty($_POST['password'])) {
-        $passwordToSave = ($_POST['password']);
+        $passwordToSave = md5(mysqli_real_escape_string($login, $_POST['password']));
     } else {
         $passwordToSave = $old['password'];
+    }
+
+    if(!empty(trim($_POST['email']))){
+        $emailToSave = $email;
+    } else {
+        $emailToSave = $email_lama;
     }
 
     $query = "
       UPDATE users SET
         nama_lengkap = '$nama',
         username = '$username',
-        email = '$email',
+        email = '$emailToSave',
         role = '$role',
         password = '$passwordToSave'
       WHERE id = '$id_user'
@@ -89,6 +96,7 @@ require'../layout/layout_header.php';
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" name="username" class="form-control" value="<?= $edit['username'] ?>">
+                </div>
                 <div class="form-group">
                     <label>Password Lama</label>
                     <input type="text" name="passlama" required class="form-control">
@@ -100,13 +108,13 @@ require'../layout/layout_header.php';
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="text" name="email" class="form-control">
+                    <input type="text" name="email" class="form-control" value="<?= $edit['email'] ?>">
                 </div>
                 <div class="form-group">
                     <label>Role</label>
                     <select name="role" class="form-control">
                         <option value="admin">Admin</option>
-                        <option value="owner">User</option>
+                        <option value="user">User</option>
                     </select>
                 </div>
                 <div class="text-right">

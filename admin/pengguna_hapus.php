@@ -8,9 +8,10 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 
 if (isset($_POST['btn-simpan'])) {
-    $input = $_POST['passlama'];
+    $input = md5($_POST['passlama']);
 
-    $querypass = "SELECT * FROM users WHERE role = 'admin' LIMIT 1";
+    $adminId   = $_SESSION['user_id'];
+    $querypass = "SELECT password FROM users WHERE role = 'admin' AND id = '{$adminId}' LIMIT 1";
     $res = mysqli_query($login, $querypass);
     $admin = mysqli_fetch_assoc($res);
 

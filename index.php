@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login Aplikasi Laundry</title>
+	<title>Login User</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -58,6 +58,11 @@
 							Login
 						</button>
 					</div>
+					<div class="container-login100-form-btn mt-3">
+       					<a class="login100-form-btn" href="user/register.php">
+           					Register
+       					</a>
+   					</div>
 					<div class="container-login100-form-btn mt-3">
 						<small>Laundry App By : Raihan Rizki Alfareza</small>
 						<br><center><p>Visit My Official Website : <a class="font-weight-bold" href='https://rizkigroups.com/' title='rizkigroups.com' target='_blank'>rizkigroups.com</a></p></center>
