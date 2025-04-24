@@ -1,5 +1,4 @@
 <?php
-// jika didefinisikan, skip autentikasi
 if (!defined('SKIP_AUTH')) {
     session_start();
     include "../services/database.php";
@@ -14,7 +13,6 @@ if (!defined('SKIP_AUTH')) {
         exit;
     }
 } else {
-    // untuk public page tetap butuh koneksi db
     include "../services/database.php";
 }
 

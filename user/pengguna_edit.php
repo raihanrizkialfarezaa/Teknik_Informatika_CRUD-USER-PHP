@@ -125,7 +125,6 @@ require'../layout/layout_header.php';
                     <img src="../assets/profile/<?= $edit['avatar'] ?>" width="100" class="m-t-10">
                     <?php endif ?>
                 </div>
-                <!-- …button reset & simpan… -->
                 </form>
                 <?php require '../layout/layout_footer.php'; ?>
                 <div class="text-right">
