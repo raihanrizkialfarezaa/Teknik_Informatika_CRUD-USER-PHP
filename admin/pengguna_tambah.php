@@ -35,7 +35,7 @@ require '../layout/layout_header.php';
 ?>
 <div class="container-fluid">
   <h3>Tambah Pengguna</h3>
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     <div class="form-group">
       <label>Nama Lengkap</label>
       <input type="text" name="nama_lengkap" class="form-control" required>

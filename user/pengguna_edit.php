@@ -20,9 +20,16 @@ if(isset($_POST['btn-simpan'])){
     $email_lama = $old['email'];
     $profil = ambilsatubaris($login, "SELECT avatar, password, email FROM users WHERE id='$id_user'");
 
-    if(!empty($_FILES['avatar']['name'])){
+    $deleteAvatar = isset($_POST['delete_avatar']);
+    if ($deleteAvatar) {
+        if (!empty($old['avatar']) && file_exists('../assets/profile/'.$old['avatar'])) {
+            unlink('../assets/profile/'.$old['avatar']);
+        }
+        $avatarToSave = null;
+    }
+    elseif (!empty($_FILES['avatar']['name'])) {
         $up = uploadImage($_FILES['avatar']);
-        $avatarToSave = $up ? $up : $old['avatar'];
+        $avatarToSave = $up ?: $old['avatar'];
     } else {
         $avatarToSave = $old['avatar'];
     }
@@ -45,10 +52,10 @@ if(isset($_POST['btn-simpan'])){
     $query = "
       UPDATE users SET
         nama_lengkap = '$nama',
-        username = '$username',
-        email = '$email',
-        password = '$passwordToSave',
-        avatar   = '$avatarToSave'
+        username     = '$username',
+        email        = '$email',
+        password     = '$passwordToSave',
+        avatar       = ".($avatarToSave? "'$avatarToSave'" : "NULL")."
       WHERE id = '$id_user'
     ";
     
@@ -95,7 +102,7 @@ require'../layout/layout_header.php';
     <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
             <div class="white-box">
-                <form method="post" action="">
+                <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Nama Pengguna</label>
                     <input type="text" name="nama_lengkap" class="form-control" value="<?= $edit['nama_lengkap'] ?>">
@@ -117,7 +124,6 @@ require'../layout/layout_header.php';
                     <label>Email</label>
                     <input type="text" name="email" class="form-control" value="<?= $edit['email'] ?>">
                 </div>
-                <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Foto Profil</label>
                     <input type="file" name="avatar" class="form-control">
@@ -125,12 +131,16 @@ require'../layout/layout_header.php';
                     <img src="../assets/profile/<?= $edit['avatar'] ?>" width="100" class="m-t-10">
                     <?php endif ?>
                 </div>
-                </form>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="delete_avatar" value="1">
+                        Hapus Foto Profil
+                    </label>
+                </div>
                 <?php require '../layout/layout_footer.php'; ?>
                 <div class="text-right">
                     <button type="reset" class="btn btn-danger">Reset</button>
                     <button type="submit" name="btn-simpan" class="btn btn-primary">Simpan</button>
-                </div>
                 </form>
             </div>
         </div>
