@@ -77,7 +77,10 @@ $user = ambilsatubaris($login,$query);
                         <a class="nav-toggler open-close waves-effect waves-light hidden-md hidden-lg" href="javascript:void(0)"><i class="fa fa-bars"></i></a>
                     </li>
                     <li>
-                        <a class="profile-pic" href="#"> <img src="../assets/plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?= $user['nama_lengkap'] ?></b></a>
+                    <a class="profile-pic" href="#">
+                        <img src="../assets/profile/<?= $user['avatar'] ?? 'default.png' ?>" width="36" class="img-circle">
+                        <b class="hidden-xs"><?= $user['nama_lengkap'] ?></b>
+                    </a>
                     </li>
                 </ul>
             </div>

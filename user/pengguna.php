@@ -34,29 +34,37 @@ $data = ambildata($login,$query);
                         <thead class="thead-dark">
                             <tr>
                                 <th width="5%">#</th>
-                                <th>Uername</th>
+                                <th>Username</th>
                                 <th>Nama Lengkap</th>
+                                <th>Avatar</th>
                                 <th>Email</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($data)): 
-                                $u = $data[0]; ?>
+                            <?php if (!empty($data)): foreach($data as $user): ?>
                             <tr>
-                                <td>1</td>
-                                <td><?= htmlspecialchars($u['username']) ?></td>
-                                <td><?= htmlspecialchars($u['nama_lengkap']) ?></td>
-                                <td><?= htmlspecialchars($u['email']) ?></td>
+                                <td></td>
+                                <td><?= htmlspecialchars($user['username']) ?></td>
+                                <td><?= htmlspecialchars($user['nama_lengkap']) ?></td>
+                                <td>
+                                    <img 
+                                        src="../assets/profile/<?= htmlspecialchars($user['avatar'] ?? 'default.png') ?>" 
+                                        width="50" height="50"
+                                        style="object-fit: cover;"
+                                        class="img-thumbnail"
+                                        alt="Avatar">
+                                </td>
+                                <td><?= htmlspecialchars($user['email']) ?></td>
                                 <td align="center">
-                                <a href="pengguna_edit.php?id=<?= $u['id'] ?>"
-                                    class="btn btn-success btn-sm">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>
+                                    <a href="pengguna_edit.php?id=<?= $user['id'] ?>"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
                                 </td>
                             </tr>
-                            <?php else: ?>
-                            <tr><td colspan="5" class="text-center">Data tidak ditemukan</td></tr>
+                            <?php endforeach; else: ?>
+                            <tr><td colspan="6" class="text-center">Data tidak ditemukan</td></tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -69,3 +77,4 @@ $data = ambildata($login,$query);
 </div>
 <?php
 require'../layout/layout_footer.php';
+?>

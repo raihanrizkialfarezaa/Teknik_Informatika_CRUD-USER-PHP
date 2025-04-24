@@ -80,11 +80,11 @@
 
     </script>
 
-    <?php if($_GET['crud'] == 'true'):?>
+    <?php if (isset($_GET['crud']) && $_GET['crud'] === 'true'): ?>
     <script type="text/javascript">
-        var title = "<?php echo $_GET['title']?>";
-        var msg = "<?php echo $_GET['msg']?>";
-        var type = "<?php echo $_GET['type']?>";
+        var title = "<?php echo isset($_GET['title']) ? $_GET['title'] : ''; ?>";
+        var msg   = "<?php echo isset($_GET['msg'])   ? $_GET['msg']   : ''; ?>";
+        var type  = "<?php echo isset($_GET['type'])  ? $_GET['type']  : ''; ?>";
         $.toast({
              heading: title,
              text: msg,
@@ -93,8 +93,8 @@
              icon: type,
              hideAfter: 3500,
              stack: 6
-         })
-    </script> 
+         });
+    </script>
     <?php endif; ?>
 </body>
 

@@ -18,6 +18,14 @@ if(isset($_POST['btn-simpan'])){
     $res = mysqli_query($login, $querypass);
     $old = mysqli_fetch_assoc($res);
     $email_lama = $old['email'];
+    $profil = ambilsatubaris($login, "SELECT avatar, password, email FROM users WHERE id='$id_user'");
+
+    if(!empty($_FILES['avatar']['name'])){
+        $up = uploadImage($_FILES['avatar']);
+        $avatarToSave = $up ? $up : $old['avatar'];
+    } else {
+        $avatarToSave = $old['avatar'];
+    }
 
     if (md5($_POST['passlama']) !== $old['password']) {
         echo "<script>alert('Password lama tidak sesuai');location.href='pengguna_edit.php?id=$id_user';</script>";
@@ -39,7 +47,8 @@ if(isset($_POST['btn-simpan'])){
         nama_lengkap = '$nama',
         username = '$username',
         email = '$email',
-        password = '$passwordToSave'
+        password = '$passwordToSave',
+        avatar   = '$avatarToSave'
       WHERE id = '$id_user'
     ";
     
@@ -108,6 +117,17 @@ require'../layout/layout_header.php';
                     <label>Email</label>
                     <input type="text" name="email" class="form-control" value="<?= $edit['email'] ?>">
                 </div>
+                <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Foto Profil</label>
+                    <input type="file" name="avatar" class="form-control">
+                    <?php if($edit['avatar']): ?>
+                    <img src="../assets/profile/<?= $edit['avatar'] ?>" width="100" class="m-t-10">
+                    <?php endif ?>
+                </div>
+                <!-- …button reset & simpan… -->
+                </form>
+                <?php require '../layout/layout_footer.php'; ?>
                 <div class="text-right">
                     <button type="reset" class="btn btn-danger">Reset</button>
                     <button type="submit" name="btn-simpan" class="btn btn-primary">Simpan</button>

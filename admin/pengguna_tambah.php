@@ -10,12 +10,18 @@ if (isset($_POST['btn-simpan'])) {
     $email    = $_POST['email'];  
     $role     = $_POST['role'];
 
-    $query = "
-      INSERT INTO users 
-        (nama_lengkap, username, password, email, role) 
-      VALUES 
-        ('$nama', '$username', '$pass', '$email', '$role')
-    ";
+    $avatarToSave = null;
+        if (!empty($_FILES['avatar']['name'])) {
+            $up = uploadImage($_FILES['avatar']);
+            $avatarToSave = $up ?: null;
+        }
+
+        $query = "
+        INSERT INTO users 
+          (nama_lengkap, username, password, email, role, avatar) 
+        VALUES 
+          ('$nama', '$username', '$pass', '$email', '$role', ".($avatarToSave? "'$avatarToSave'" : "NULL").")
+      ";
 
     if (bisa($login, $query) == 1) {
         header('Location: pengguna.php?crud=true&msg=Berhasil menambahkan '.$role);
@@ -53,6 +59,10 @@ require '../layout/layout_header.php';
           <option value="<?= $r ?>"><?= ucfirst($r) ?></option>
         <?php endforeach; ?>
       </select>
+    </div>
+    <div class="form-group">
+        <label>Foto Profil</label>
+        <input type="file" name="avatar" class="form-control">
     </div>
     <button type="submit" name="btn-simpan" class="btn btn-primary">Simpan</button>
     <a href="pengguna.php" class="btn btn-default">Batal</a>

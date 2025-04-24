@@ -18,6 +18,14 @@ if(isset($_POST['btn-simpan'])){
     $res = mysqli_query($login, $querypass);
     $old = mysqli_fetch_assoc($res);
     $email_lama = $old['email'];
+    $profil = ambilsatubaris($login,"SELECT avatar FROM users WHERE id='$id_user'");
+
+    if (!empty($_FILES['avatar']['name'])) {
+        $up = uploadImage($_FILES['avatar']);
+        $avatarToSave = $up ?: $profil['avatar'];
+    } else {
+        $avatarToSave = $profil['avatar'];
+    }
 
     if (md5($_POST['passlama']) !== $old['password']) {
         echo "<script>alert('Password lama tidak sesuai');location.href='pengguna_edit.php?id=$id_user';</script>";
@@ -36,14 +44,15 @@ if(isset($_POST['btn-simpan'])){
     }
 
     $query = "
-      UPDATE users SET
-        nama_lengkap = '$nama',
-        username = '$username',
-        email = '$emailToSave',
-        role = '$role',
-        password = '$passwordToSave'
-      WHERE id = '$id_user'
-    ";
+          UPDATE users SET
+            nama_lengkap='$nama',
+            username='$username',
+            email='$emailToSave',
+            role='$role',
+            password='$passwordToSave',
+            avatar='$avatarToSave'
+          WHERE id='$id_user'
+        ";
     
     $execute = bisa($login,$query);
     if($execute == 1){
@@ -88,7 +97,7 @@ require'../layout/layout_header.php';
     <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
             <div class="white-box">
-                <form method="post" action="">
+                <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Nama Pengguna</label>
                     <input type="text" name="nama_lengkap" class="form-control" value="<?= $edit['nama_lengkap'] ?>">
@@ -120,6 +129,13 @@ require'../layout/layout_header.php';
                             User
                         </option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label>Foto Profil</label>
+                    <input type="file" name="avatar" class="form-control">
+                    <?php if($edit['avatar']): ?>
+                    <img src="../assets/profile/<?= $edit['avatar'] ?>" width="100" class="m-t-10">
+                    <?php endif ?>
                 </div>
                 <div class="text-right">
                     <button type="reset" class="btn btn-danger">Reset</button>

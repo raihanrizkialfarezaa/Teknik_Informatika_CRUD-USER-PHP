@@ -43,4 +43,18 @@ function hapus($where,$table,$redirect){
     echo $query;
 }
 
+function uploadImage($file){
+    $target_dir = "../assets/profile/";
+    if(!is_dir($target_dir)) mkdir($target_dir, 0755, true);
+    $ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+    $allow = ['jpg','jpeg','png','gif'];
+    if(!in_array($ext, $allow)) return false;
+    $newName = time()."_".uniqid().".{$ext}";
+    $target = $target_dir . $newName;
+    if(getimagesize($file["tmp_name"]) && move_uploaded_file($file["tmp_name"], $target)){
+        return $newName;
+    }
+    return false;
+}
+
 ?>

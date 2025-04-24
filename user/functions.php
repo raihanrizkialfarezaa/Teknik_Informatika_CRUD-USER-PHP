@@ -1,15 +1,21 @@
-<?php 
-session_start();
-include "../services/database.php";
+<?php
+// jika didefinisikan, skip autentikasi
+if (!defined('SKIP_AUTH')) {
+    session_start();
+    include "../services/database.php";
 
-if($_SESSION){
-    if($_SESSION['role'] == 'user'){
-
-    }else{
+    if ($_SESSION) {
+        if ($_SESSION['role'] !== 'user') {
+            header('location:../index.php');
+            exit;
+        }
+    } else {
         header('location:../index.php');
+        exit;
     }
-}else{
-    header('location:../index.php');
+} else {
+    // untuk public page tetap butuh koneksi db
+    include "../services/database.php";
 }
 
 function ambildata($login,$query){
@@ -43,4 +49,17 @@ function hapus($where,$table,$redirect){
     echo $query;
 }
 
+function uploadImage($file){
+    $target_dir = "../assets/profile/";
+    if(!is_dir($target_dir)) mkdir($target_dir, 0755, true);
+    $ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+    $allow = ['jpg','jpeg','png','gif'];
+    if(!in_array($ext, $allow)) return false;
+    $newName = time()."_".uniqid().".{$ext}";
+    $target = $target_dir . $newName;
+    if(getimagesize($file["tmp_name"]) && move_uploaded_file($file["tmp_name"], $target)){
+        return $newName;
+    }
+    return false;
+}
 ?>

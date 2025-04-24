@@ -33,8 +33,9 @@ $data = ambildata($login,$query);
                         <thead class="thead-dark">
                             <tr>
                                 <th width="5%">#</th>
-                                <th>Uername</th>
+                                <th>Username</th>
                                 <th>Nama Lengkap</th>
+                                <th>Avatar</th>
                                 <th>Email</th>
                                 <th width="15%">Aksi</th>
                             </tr>
@@ -43,9 +44,15 @@ $data = ambildata($login,$query);
                             <?php foreach($data as $user): ?>
                                 <tr>
                                     <td></td>
-                                    <td><?= $user['username'] ?></td>
-                                    <td><?= $user['nama_lengkap'] ?></td>
-                                    <td><?= $user['email'] ?></td>
+                                    <td><?= htmlspecialchars($user['username']) ?></td>
+                                    <td><?= htmlspecialchars($user['nama_lengkap']) ?></td>
+                                    <td>
+                                        <img 
+                                            src="../assets/profile/<?= htmlspecialchars($user['avatar'] ?? 'default.png') ?>" 
+                                            width="50" class="img-circle" 
+                                            alt="Avatar">
+                                    </td>
+                                    <td><?= htmlspecialchars($user['email']) ?></td>
                                     <td align="center">
                                         <a href="pengguna_edit.php?id=<?php echo $user['id']; ?>" class="btn btn-success btn-sm">
                                             <i class="fa fa-edit"></i> Edit
@@ -68,3 +75,4 @@ $data = ambildata($login,$query);
 </div>
 <?php
 require'../layout/layout_footer.php';
+?>

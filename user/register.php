@@ -1,5 +1,7 @@
 <?php
+define('SKIP_AUTH', true);
 include "../services/database.php";
+include "../user/functions.php";
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -7,16 +9,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = mysqli_real_escape_string($login, $_POST['username']);
     $email    = mysqli_real_escape_string($login, $_POST['email']);
     $password = md5(mysqli_real_escape_string($login, $_POST['password']));
+    $avatarToSave = 'default.png';
 
     $cek = "SELECT id FROM users WHERE username='$username'";
+    if (!empty($_FILES['avatar']['name'])) {
+        $up = uploadImage($_FILES['avatar']);
+        $avatarToSave = $up ?: $avatarToSave;
+    }
     if (mysqli_num_rows(mysqli_query($login, $cek)) > 0) {
         $error = 'Username sudah terpakai';
     } else {
         $ins = "
           INSERT INTO users
-            (nama_lengkap, username, email, password, role)
+            (nama_lengkap, username, email, password, role, avatar)
           VALUES
-            ('$nama','$username','$email','$password','user')
+            ('$nama','$username','$email','$password','user','$avatarToSave')
         ";
         if (mysqli_query($login, $ins)) {
             header('Location: ../index.php?msg=Registrasi berhasil, silakan login');
@@ -47,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($error): ?>
                   <div class="alert alert-danger m-3"><?= $error ?></div>
                 <?php endif ?>
-                <form class="login100-form validate-form" method="POST" action="register.php">
+                <form class="login100-form validate-form" method="POST" action="register.php" enctype="multipart/form-data">
                     <div class="wrap-input100 validate-input m-b-26" data-validate="Nama lengkap dibutuhkan">
                         <span class="label-input100">Nama Lengkap</span>
                         <input class="input100" type="text" name="nama" placeholder="Masukkan nama lengkap" required>
@@ -66,6 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="wrap-input100 validate-input m-b-18" data-validate="Password dibutuhkan">
                         <span class="label-input100">Password</span>
                         <input class="input100" type="password" name="password" placeholder="Masukkan password" required>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-26">
+                        <span class="label-input100">Foto Profil</span>
+                        <input class="input100" type="file" name="avatar">
                         <span class="focus-input100"></span>
                     </div>
                     <div class="container-login100-form-btn">
