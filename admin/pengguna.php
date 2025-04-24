@@ -47,10 +47,12 @@ $data = ambildata($login,$query);
                                     <td><?= htmlspecialchars($user['username']) ?></td>
                                     <td><?= htmlspecialchars($user['nama_lengkap']) ?></td>
                                     <td>
-                                        <img 
-                                            src="../assets/profile/<?= htmlspecialchars($user['avatar'] ?? 'default.png') ?>" 
-                                            width="50" class="img-circle" 
-                                            alt="Avatar">
+                                        <img
+                                        src="../assets/profile/<?= htmlspecialchars($user['avatar'] ?? 'default.png') ?>" 
+                                        width="50" height="50"
+                                        style="object-fit: cover;"
+                                        class="img-thumbnail"
+                                        alt="Avatar">
                                     </td>
                                     <td><?= htmlspecialchars($user['email']) ?></td>
                                     <td align="center">
